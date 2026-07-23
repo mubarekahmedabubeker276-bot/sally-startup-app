@@ -1,0 +1,261 @@
+:root {
+    --purple-main: #5D5FEF;
+    --purple-text: #5D5FEF;
+    --yellow-accent: #FFD700;
+    --card-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
+    --text-dark: #2b2b40;
+    --text-gray: #777799;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Arial, sans-serif;
+}
+
+body {
+    background-color: #fcfcff;
+    color: var(--text-dark);
+}
+
+/* Video Header Banner Replica Layout */
+.hero-banner {
+    background-color: var(--purple-main);
+    color: #ffffff;
+    text-align: center;
+    padding: 60px 20px;
+    width: 100%;
+}
+
+.hero-banner h1 {
+    font-size: 3.2rem;
+    margin-bottom: 12px;
+    font-weight: bold;
+    letter-spacing: -0.5px;
+}
+
+.subtitle {
+    font-size: 1.25rem;
+    opacity: 0.95;
+    margin-bottom: 25px;
+}
+
+/* Video Replica Header Buttons Styling [image_0] */
+.video-buttons-container {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 10px;
+}
+
+.video-btn {
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 0.95rem;
+    padding: 10px 24px;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+}
+
+.video-btn.outline {
+    border: 2px solid white;
+    color: white;
+    background: transparent;
+}
+
+.video-btn.outline:hover {
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.video-btn.filled {
+    background-color: var(--yellow-accent);
+    color: #2b2b40;
+    border: 2px solid var(--yellow-accent);
+}
+
+.video-btn.filled:hover {
+    background-color: #ffe44d;
+    border-color: #ffe44d;
+}
+
+/* Grid Framework Structural Alignments */
+.store-layout {
+    display: grid;
+    grid-template-columns: 3fr 1fr;
+    max-width: 1200px;
+    margin: 40px auto;
+    gap: 35px;
+    padding: 0 20px;
+}
+
+.menu-section h2 {
+    text-align: center;
+    color: var(--purple-text);
+    margin-bottom: 35px;
+    font-size: 2.2rem;
+    font-weight: bold;
+}
+
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px;
+}
+
+/* Storefront Item Card Blocks */
+.dish-card {
+    background: #ffffff;
+    border: 1px solid #eeeeee;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: var(--card-shadow);
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.2s;
+}
+
+.dish-card:hover {
+    transform: translateY(-3px);
+}
+
+.dish-thumbnail {
+    background-color: #f5f5f5;
+    height: 180px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #aaa;
+    border-bottom: 1px solid #eeeeee;
+}
+
+.dish-body {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+/* Exact Visual Color Match for Video text [image_0] */
+.dish-title-purple {
+    color: var(--purple-text);
+    font-size: 1.3rem;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.dish-body p {
+    color: var(--text-gray);
+    font-size: 0.95rem;
+    line-height: 1.5;
+    margin-bottom: 20px;
+}
+
+.dish-price {
+    font-weight: bold;
+    font-size: 1.2rem;
+    color: var(--text-dark);
+}
+
+/* Practice Sidebar Element Settings */
+.cart-sidebar {
+    background: #ffffff;
+    border: 1px solid #eee;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: var(--card-shadow);
+    height: fit-content;
+}
+
+.cart-sidebar h3 {
+    margin-top: 0;
+    border-bottom: 2px solid var(--purple-main);
+    padding-bottom: 12px;
+}
+
+.cart-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px dashed #eee;
+}
+
+.cart-total-box {
+    margin-top: 20px;
+    text-align: right;
+    font-size: 1.2rem;
+    padding-top: 10px;
+    border-top: 2px solid var(--text-dark);
+}
+
+.add-to-cart-btn {
+    background-color: var(--purple-main);
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    font-weight: bold;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.add-to-cart-btn:hover {
+    background-color: #4446c7;
+}
+
+.empty-msg {
+    color: #ccc;
+    text-align: center;
+    padding: 30px 0;
+}
+
+/* Screenshot 2: Center Promotion Banner [image_1] */
+.bottom-promo-banner {
+    background-color: #ffffff;
+    border: 1px solid #eeeeee;
+    max-width: 800px;
+    margin: 60px auto 40px auto;
+    padding: 40px 20px;
+    text-align: center;
+    border-radius: 8px;
+    box-shadow: var(--card-shadow);
+}
+
+.bottom-promo-banner h2 {
+    color: var(--purple-text);
+    font-size: 2.2rem;
+    margin-bottom: 15px;
+    font-weight: bold;
+}
+
+.bottom-promo-banner p {
+    color: var(--text-gray);
+    font-size: 1.1rem;
+    margin-bottom: 25px;
+}
+
+.promo-order-btn {
+    background-color: var(--purple-main);
+    color: white;
+    border: none;
+    padding: 12px 35px;
+    font-size: 1.05rem;
+    font-weight: bold;
+    border-radius: 6px;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(93, 95, 239, 0.3);
+}
+
+.promo-order-btn:hover {
+    background-color: #4446c7;
+}
+
+/* Clean Gray Footer block */
+.video-footer {
+    text-align: center;
+    padding: 25px;
+    background-color: #2b2b36;
+    color: #9999aa;
+    font-size: 0.9rem;
+    margin-top: 60px;
+    width: 100%;
+}

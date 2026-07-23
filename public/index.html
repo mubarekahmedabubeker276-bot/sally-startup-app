@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sally Startup | Fast & Fresh Food Delivery</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <!-- Video Replica Header Banner -->
+    <header class="hero-banner">
+        <h1>Sally Startup</h1>
+        <p class="subtitle">Fast & Fresh Food Delivery to Your Doorstep</p>
+        <div class="video-buttons-container">
+            <a href="#menu-target" class="video-btn outline">Menu</a>
+            <a href="#order-target" class="video-btn filled">Order Now</a>
+        </div>
+    </header>
+
+    <!-- Content Split Layout Area -->
+    <div class="store-layout">
+        
+        <!-- Popular Dishes Grid -->
+        <main class="menu-section" id="menu-target">
+            <h2>Our Popular Dishes</h2>
+            <div class="grid-container" id="menuGrid">
+                <!-- Dynamically loaded via Javascript -->
+            </div>
+        </main>
+
+        <!-- Sidebar Shopping Cart panel remains integrated for practicing -->
+        <aside class="cart-sidebar">
+            <h3>Your Order Basket</h3>
+            <div id="cartItemsContainer"><p class="empty-msg">Your basket is empty</p></div>
+            <div class="cart-total-box">
+                <strong>Total: $<span id="cartTotal">0.00</span></strong>
+            </div>
+            <input type="text" id="custName" placeholder="Your Name for Delivery" style="width:100%; padding:8px; margin:10px 0;">
+            <button class="add-to-cart-btn" style="width: 100%;" onclick="submitCheckout()">Checkout Now</button>
+        </aside>
+
+    </div>
+
+    <!-- Video Screenshot 2: "Order Your Favorite Meal" Banner section -->
+    <section class="bottom-promo-banner" id="order-target">
+        <h2>Order Your Favorite Meal</h2>
+        <p>Craving something delicious? Get your meal delivered fast and fresh.</p>
+        <button class="promo-order-btn" onclick="alert('Scroll up to use the active checkout panel!')">Order Now</button>
+    </section>
+
+    <!-- Copyright Footer Area -->
+    <footer class="video-footer">
+        <p>&copy; Sally Startup. All rights reserved.</p>
+    </footer>
+
+    <script>
+        let shoppingCart = [];
+
+        async function fetchDishes() {
+            const response = await fetch('/api/menu');
+            const dishes = await response.json();
+            const grid = document.getElementById('menuGrid');
+            
+            // Hardcoded fallback photos layout matching image 1 from the video 
+            const sampleImages = [
+                "https://unsplash.com", // Burger
+                "https://unsplash.com", // Pizza
+                "https://unsplash.com"  // Salad
+            ];
+
+            grid.innerHTML = dishes.map((dish, index) => {
+                const itemImg = dish.img ? dish.img : (sampleImages[index] || "https://unsplash.com");
+                return `
+                    <div class="dish-card">
+                        <div class="dish-thumbnail">
+                            <img src="${itemImg}" style="width:100%; height:100%; object-fit:cover;" alt="${dish.name}">
+                        </div>
+                        <div class="dish-body">
+                            <h3 class="dish-title-purple">${dish.name}</h3>
+                            <p>${dish.desc}</p>
+                            <div style="display:flex; justify-content:space-between; align-items:center; margin-top:auto;">
+                                <span class="dish-price">$${dish.price}</span>
+                                <button class="add-to-cart-btn" onclick="addToCart('${dish.name}', ${dish.price})">Add</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function addToCart(name, price) {
+            shoppingCart.push({ name, price });
+            updateCartUI();
+        }
+
+        function updateCartUI() {
+            const container = document.getElementById('cartItemsContainer');
+            const totalSpan = document.getElementById('cartTotal');
+            
+            if(shoppingCart.length === 0) {
+                container.innerHTML = '<p class="empty-msg">Your basket is empty</p>';
+                totalSpan.innerText = '0.00';
+                return;
+            }
+
+            container.innerHTML = shoppingCart.map(item => `
+                <div class="cart-row">
+                    <span>${item.name}</span>
+                    <span>$${item.price.toFixed(2)}</span>
+                </div>
+            `).join('');
+
+            const total = shoppingCart.reduce((sum, item) => sum + item.price, 0);
+            totalSpan.innerText = total.toFixed(2);
+        }
+
+        async function submitCheckout() {
+            const name = document.getElementById('custName').value;
+            if(!name || shoppingCart.length === 0) return alert("Add items and enter your name first!");
+
+            const res = await fetch('/api/orders/checkout', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    customerName: name,
+                    cartItems: shoppingCart.map(i => i.name).join(', '),
+                    totalAmount: document.getElementById('cartTotal').innerText
+                })
+            });
+            const data = await res.json();
+            alert(data.message);
+            shoppingCart = [];
+            document.getElementById('custName').value = '';
+            updateCartUI();
+        }
+
+        window.onload = fetchDishes;
+    </script>
+</body>
+</html>
