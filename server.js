@@ -12,7 +12,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 // ========================================================
 // ⚠️ REPLACE THIS LINK WITH YOUR COMPLETED NOTEPAD LINK
 // ========================================================
-mongodb+srv://mubarek:Mubarek35;@cluster0.b5onzoh.mongodb.net/?appName=Cluster0
+mongodb+srv://mubarek:Mubarek35@cluster0.b5onzoh.mongodb.net/?appName=Cluster0
 const MONGO_URI = "mongodb+srv://mubarek:Mubarek35@cluster0.xxxx.mongodb.net/sally_startup?retryWrites=true&w=majority";
 
 mongoose.connect(MONGO_URI)
