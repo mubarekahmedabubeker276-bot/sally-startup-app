@@ -9,8 +9,11 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 
-// PASTE YOUR MONGODB CONNECTION STRING LINK HERE
-const MONGO_URI = "mongodb+srv://YOUR_USER:YOUR_PASS@cluster0.xxxx.mongodb.net/sally_startup?retryWrites=true&w=majority";
+// ========================================================
+// ⚠️ REPLACE THIS LINK WITH YOUR COMPLETED NOTEPAD LINK
+// ========================================================
+mongodb+srv://mubarek:Mubarek35;@cluster0.b5onzoh.mongodb.net/?appName=Cluster0
+const MONGO_URI = "mongodb+srv://mubarek:PASTE_YOUR_PASSWORD_HERE@cluster0.xxxx.mongodb.net/sally_startup?retryWrites=true&w=majority";
 
 mongoose.connect(MONGO_URI)
     .then(() => console.log("Connected to MongoDB Cloud Database!"))
@@ -25,13 +28,18 @@ const OrderItem = mongoose.model('OrderItem', OrderSchema);
 
 // Setup default screenshot dishes if database is empty
 async function initDatabase() {
-    const count = await MenuItem.countDocuments();
-    if(count === 0) {
-        await MenuItem.insertMany([
-            { name: "Cheeseburger Deluxe", desc: "Juicy beef patty, melted cheese, fresh lettuce & tomato.", price: "8.99", img: "" },
-            { id: 2, name: "Pepperoni Pizza", desc: "Classic pizza with pepperoni, mozzarella, and tangy tomato sauce.", price: "11.99", img: "" },
-            { id: 3, name: "Caesar Salad", desc: "Crisp romaine, parmesan, croutons, and creamy Caesar dressing.", price: "7.50", img: "" }
-        ]);
+    try {
+        const count = await MenuItem.countDocuments();
+        if(count === 0) {
+            await MenuItem.insertMany([
+                { name: "Cheeseburger Deluxe", desc: "Juicy beef patty, melted cheese, fresh lettuce & tomato.", price: "8.99", img: "" },
+                { name: "Pepperoni Pizza", desc: "Classic pizza with pepperoni, mozzarella, and tangy tomato sauce.", price: "11.99", img: "" },
+                { name: "Caesar Salad", desc: "Crisp romaine, parmesan, croutons, and creamy Caesar dressing.", price: "7.50", img: "" }
+            ]);
+            console.log("Default dishes seeded into MongoDB Atlas successfully!");
+        }
+    } catch(err) {
+        console.error("Error initializing database entries:", err);
     }
 }
 initDatabase();
@@ -70,10 +78,14 @@ app.post('/api/orders/checkout', async (req, res) => {
     res.json({ success: true, message: "Order placed! Preparing your meal." });
 });
 
-// NEW FEATURE: DELETE / COMPLETE ORDER ROUTE
+// UPGRADED FEATURE: DELETE/COMPLETE ORDER ENDPOINT
 app.delete('/api/admin/orders/:id', async (req, res) => {
-    await OrderItem.findByIdAndDelete(req.params.id);
-    res.json({ success: true, message: "Order marked as complete and delivered!" });
+    try {
+        await OrderItem.findByIdAndDelete(req.params.id);
+        res.json({ success: true, message: "Order marked as complete and delivered!" });
+    } catch(err) {
+        res.status(500).json({ success: false, message: "Failed to remove item." });
+    }
 });
 
 const PORT = process.env.PORT || 5000;
