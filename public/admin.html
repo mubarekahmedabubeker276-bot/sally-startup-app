@@ -68,20 +68,31 @@
             alert(data.message);
             document.getElementById('addFoodForm').reset();
         }
-
         async function loadOrdersFeed() {
             const res = await fetch('/api/admin/orders');
             const orders = await res.json();
             const box = document.getElementById('incomingOrdersBox');
             
-            if(orders.length === 0) return;
+            if(orders.length === 0) {
+                box.innerHTML = '<p style="color:#aaa;">No active kitchen orders...</p>';
+                return;
+            }
+            
             box.innerHTML = orders.reverse().map(o => `
-                <div style="background:white; padding:10px; border-left:4px solid green; margin-bottom:10px; border-radius:4px; box-shadow:0 1px 3px rgba(0,0,0,0.1);">
-                    <strong>${o.customer}</strong> ordered: <span style="color:#5D5FEF;">${o.items}</span>
-                    <div style="font-size:0.8rem; color:#888; margin-top:5px;">Total: $${o.total} | Received: ${o.timestamp}</div>
+                <div style="background:white; padding:15px; border-left:4px solid green; margin-bottom:12px; border-radius:4px; box-shadow:0 1px 4px rgba(0,0,0,0.1); display:flex; justify-content:space-between; align-items:center;">
+                    <div>
+                        <strong>${o.customer}</strong> ordered: <span style="color:#5D5FEF;">${o.items}</span>
+                        <div style="font-size:0.8rem; color:#888; margin-top:5px;">Total: $${o.total} | Received: ${o.timestamp}</div>
+                    </div>
+                    <button onclick="completeOrder('${o._id}')" style="background:#28a745; color:white; border:none; padding:6px 12px; border-radius:4px; font-weight:bold; cursor:pointer;">✓ Delivered</button>
                 </div>
             `).join('');
         }
+
+        async function completeOrder(orderId) {
+            if(!confirm("Mark this order as complete and delivered?")) return;
+            const res = await fetch(`/api/admin/orders/${orderId}`, { method: 'DELETE' });
+            const data = await res.json();
+            loadOrdersFeed();
+        }
     </script>
-</body>
-</html>
